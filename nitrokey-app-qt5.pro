@@ -102,7 +102,8 @@ HEADERS  += $${SRCUIDIR}/mainwindow.h \
             $${SRCUIDIR}/passwordsafedialog.h \
             $${SRCUIDIR}/securitydialog.h \
             $${SRCDIR}/mcvs-wrapper.h \
-            $${SRCUIDIR}/nitrokey-applet.h
+            $${SRCUIDIR}/nitrokey-applet.h \
+            version.h
 
 FORMS +=    $${UIDIR}/mainwindow.ui \
             $${UIDIR}/stick20window.ui \
@@ -154,6 +155,15 @@ unix:!macx{
     LIBS += -L/usr/lib -lappindicator -lnotify
     CONFIG += link_pkgconfig
     PKGCONFIG = gtk+-2.0
+
+    bump_version.target = version.h
+    bump_version.commands = \
+        ./bump_version.sh
+    bump_version.depends = FORCE
+
+    QMAKE_EXTRA_TARGETS   += \
+           bump_version
+
 }
 
 OTHER_FILES +=
