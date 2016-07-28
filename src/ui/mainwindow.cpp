@@ -488,26 +488,9 @@ MainWindow::MainWindow(StartUpParameter_tst *StartupInfo_st, QWidget *parent)
   if (0 != StartupInfo_st->LockHardware)
     LockHardware = TRUE;
 
-  switch (StartupInfo_st->FlagDebug) {
-  case DEBUG_STATUS_LOCAL_DEBUG:
-    DebugWindowActive = TRUE;
-    DebugingActive = TRUE;
-    DebugingStick20PoolingActive = FALSE;
-    break;
-
-  case DEBUG_STATUS_DEBUG_ALL:
-    DebugWindowActive = TRUE;
-    DebugingActive = TRUE;
-    DebugingStick20PoolingActive = TRUE;
-    break;
-
-  case DEBUG_STATUS_NO_DEBUGGING:
-  default:
-    DebugWindowActive = FALSE;
-    DebugingActive = FALSE;
-    DebugingStick20PoolingActive = FALSE;
-    break;
-  }
+  DebugWindowActive = TRUE;
+  DebugingActive = TRUE;
+  DebugingStick20PoolingActive = TRUE;
 
   ui->setupUi(this);
   ui->tabWidget->setCurrentIndex(0); // Set first tab active

@@ -254,6 +254,14 @@ int Device::sendCommand(Command *cmd) {
     cmd->generateCRC();
   ((uint32_t *)(report + 1))[15] = cmd->crc;
 
+  qDebug() << "### FUNCTION" <<__FUNCTION__ << "@" << __FILE__ <<__LINE__;
+#define d(x) qDebug() << #x << x;
+
+  d(cmd->commandType)
+  d(cmd->crc)
+
+#undef d
+
   if (0 == dev_hid_handle) {
     return (-1); // Return error
   }

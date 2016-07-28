@@ -129,12 +129,7 @@ int main(int argc, char *argv[]) {
       exit(0);
     }
 
-    if ((0 == strcmp(p, "--debug")) || (0 == strcmp(p, "-d"))) {
-      StartupInfo_st.FlagDebug = DEBUG_STATUS_LOCAL_DEBUG;
-    }
-    if (0 == strcmp(p, "--debugAll")) {
-      StartupInfo_st.FlagDebug = DEBUG_STATUS_DEBUG_ALL;
-    }
+     StartupInfo_st.FlagDebug = DEBUG_STATUS_DEBUG_ALL;
 
     if ((0 == strcmp(p, "--admin")) || (0 == strcmp(p, "-a"))) {
       StartupInfo_st.ExtendedConfigActive = TRUE;

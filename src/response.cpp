@@ -425,7 +425,23 @@ int Response::getResponse(Device *device) {
   memcpy((void *)&HID_Stick20Status_st, reportBuffer + 1 + OUTPUT_CMD_RESULT_STICK20_STATUS_START,
          sizeof(HID_Stick20Status_st));
 
-  DebugResponse();
+    qDebug() << "### FUNCTION" <<__FUNCTION__ << "@" << __FILE__ <<__LINE__;
+#define d(x) qDebug() << #x << x;
+
+    d(deviceStatus)
+    d(lastCommandType)
+    d(lastCommandCRC)
+    d(lastCommandStatus)
+    d(responseCRC)
+#undef d
+    qDebug() << "HID_Stick20Status_st.CommandCounter_u8 << .LastCommand_u8 << .ProgressBarValue_u8 << .Status_u8;";
+    qDebug() << HID_Stick20Status_st.CommandCounter_u8 <<
+                HID_Stick20Status_st.LastCommand_u8 <<
+                HID_Stick20Status_st.ProgressBarValue_u8 <<
+                HID_Stick20Status_st.Status_u8;
+
+//    qDebug() << "getResponse 1  took" << timer2.elapsed() << "milliseconds";
+    DebugResponse();
 
   return 0;
 }
