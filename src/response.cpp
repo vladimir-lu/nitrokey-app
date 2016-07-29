@@ -64,19 +64,9 @@ Response::Response() {
   HID_Stick20Status_st.ProgressBarValue_u8 = 0;
 }
 
-/*******************************************************************************
+#include <string>
+extern std::string hexdump(const char *p, size_t size);
 
-  DebugResponse
-
-  Changes
-  Date      Author          Info
-  10.03.14  RB              Function created
-
-  Reviews
-  Date      Reviewer        Info
-
-
-*******************************************************************************/
 void Response::DebugResponse() {
   char text[1000];
 
@@ -91,14 +81,13 @@ void Response::DebugResponse() {
     return;
   }
 
-  SNPRINTF(text, sizeof(text), "%6d :getResponse : ", Counter);
+  SNPRINTF(text, sizeof(text), "%6d :getResponse : \n", Counter);
 
   Counter++;
   DebugAppendTextGui(text);
-  for (i = 0; i <= 64; i++) {
-    SNPRINTF(text, sizeof(text), "%02x ", (unsigned char)reportBuffer[i]);
-    DebugAppendTextGui(text);
-  }
+
+  std::string h = hexdump((const char*)reportBuffer, 65);
+  DebugAppendTextGui(h.c_str());
 
   SNPRINTF(text, sizeof(text), "\n");
   DebugAppendTextGui(text);

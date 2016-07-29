@@ -232,6 +232,29 @@ void Device::connect() {
   }
 }
 
+#include <string>
+#include <sstream>
+
+std::string hexdump(const char *p, size_t size) {
+  std::stringstream out;
+  char formatbuf[128];
+  const char *pstart = p;
+
+  for (const char *pend = p + size; p < pend;) {
+    snprintf(formatbuf, 128, "%04x\t", p - pstart);
+    out << formatbuf;
+
+    for (const char *le = p + 16; p < le && p < pend; p++) {
+      snprintf(formatbuf, 128, "%02x ", uint8_t(*p));
+      out << formatbuf;
+    }
+    out << std::endl;
+  }
+  return out.str();
+}
+
+
+
 /*******************************************************************************
   sendCommand
   Send a command to the stick via the send feature report HID message
@@ -285,17 +308,12 @@ int Device::sendCommand(Command *cmd) {
 
     if (STICK20_CMD_SEND_DEBUG_DATA != report[1]) // Log no debug infos
     {
-      SNPRINTF(text, sizeof(text), "%6d :sendCommand0: ", Counter);
+      SNPRINTF(text, sizeof(text), "%6d :sendCommand0: \n", Counter);
 
       Counter++;
       DebugAppendTextGui(text);
-      for (i = 0; i <= 64; i++) {
-        SNPRINTF(text, sizeof(text), "%02x ", (unsigned char)report[i]);
-        DebugAppendTextGui(text);
-      }
-      SNPRINTF(text, sizeof(text), "\n");
-
-      DebugAppendTextGui(text);
+      std::string h = hexdump((const char*)report, 65);
+      DebugAppendTextGui(h.c_str());
     }
   }
 
