@@ -126,7 +126,9 @@ void Response::DebugResponse() {
     break;
 
   default:
-    DebugAppendTextGui((char *)"         Device status       : Unknown\n");
+    const char* unknown_text = (char *)"         Device status       : Unknown (%u)\n";
+    SNPRINTF(text, sizeof(text), unknown_text, deviceStatus);
+    DebugAppendTextGui(text);
     break;
   }
 
@@ -371,7 +373,9 @@ void Response::DebugResponse() {
     DebugAppendTextGui((char *)"         Last command status : CMD_STATUS_UNKNOWN_COMMAND\n");
     break;
   default:
-    DebugAppendTextGui((char *)"         Last command status : Unknown\n");
+    const char* unknown_text_cmd = "         Last command status : Unknown (%u)\n";
+    SNPRINTF(text, sizeof(text), unknown_text_cmd, lastCommandStatus);
+    DebugAppendTextGui(text);
     break;
   }
 
@@ -431,6 +435,7 @@ int Response::getResponse(Device *device) {
 
 //    qDebug() << "getResponse 1  took" << timer2.elapsed() << "milliseconds";
     DebugResponse();
-
-  return 0;
+    qDebug() << "================================================";
+    return 0;
+  }
 }
