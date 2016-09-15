@@ -86,7 +86,7 @@ void Response::DebugResponse() {
   Counter++;
   DebugAppendTextGui(text);
 
-  std::string h = hexdump((const char*)reportBuffer, 65);
+  std::string h = hexdump((const char *)reportBuffer, 65);
   DebugAppendTextGui(h.c_str());
 
   SNPRINTF(text, sizeof(text), "\n");
@@ -126,7 +126,7 @@ void Response::DebugResponse() {
     break;
 
   default:
-    const char* unknown_text = (char *)"         Device status       : Unknown (%u)\n";
+    const char *unknown_text = (char *)"         Device status       : Unknown (%u)\n";
     SNPRINTF(text, sizeof(text), unknown_text, deviceStatus);
     DebugAppendTextGui(text);
     break;
@@ -373,7 +373,7 @@ void Response::DebugResponse() {
     DebugAppendTextGui((char *)"         Last command status : CMD_STATUS_UNKNOWN_COMMAND\n");
     break;
   default:
-    const char* unknown_text_cmd = "         Last command status : Unknown (%u)\n";
+    const char *unknown_text_cmd = "         Last command status : Unknown (%u)\n";
     SNPRINTF(text, sizeof(text), unknown_text_cmd, lastCommandStatus);
     DebugAppendTextGui(text);
     break;
@@ -418,14 +418,11 @@ int Response::getResponse(Device *device) {
   memcpy((void *)&HID_Stick20Status_st, reportBuffer + 1 + OUTPUT_CMD_RESULT_STICK20_STATUS_START,
          sizeof(HID_Stick20Status_st));
 
-    qDebug() << "### FUNCTION" <<__FUNCTION__ << "@" << __FILE__ <<__LINE__;
+    if (lastCommandType != 0) {
+      qDebug() << "### FUNCTION" << __FUNCTION__ << "@" << __FILE__ << __LINE__;
 #define d(x) qDebug() << #x << x;
 
-    d(deviceStatus)
-    d(lastCommandType)
-    d(lastCommandCRC)
-    d(lastCommandStatus)
-    d(responseCRC)
+      d(deviceStatus) d(lastCommandType) d(lastCommandCRC) d(lastCommandStatus) d(responseCRC)
 #undef d
     qDebug() << "HID_Stick20Status_st.CommandCounter_u8 << .LastCommand_u8 << .ProgressBarValue_u8 << .Status_u8;";
     qDebug() << HID_Stick20Status_st.CommandCounter_u8 <<
@@ -433,9 +430,9 @@ int Response::getResponse(Device *device) {
                 HID_Stick20Status_st.ProgressBarValue_u8 <<
                 HID_Stick20Status_st.Status_u8;
 
-//    qDebug() << "getResponse 1  took" << timer2.elapsed() << "milliseconds";
     DebugResponse();
     qDebug() << "================================================";
     return 0;
+=======
   }
 }

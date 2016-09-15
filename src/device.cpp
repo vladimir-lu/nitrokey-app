@@ -232,8 +232,8 @@ void Device::connect() {
   }
 }
 
-#include <string>
 #include <sstream>
+#include <string>
 
 std::string hexdump(const char *p, size_t size) {
   std::stringstream out;
@@ -252,8 +252,6 @@ std::string hexdump(const char *p, size_t size) {
   }
   return out.str();
 }
-
-
 
 /*******************************************************************************
   sendCommand
@@ -280,8 +278,7 @@ int Device::sendCommand(Command *cmd) {
   qDebug() << "### FUNCTION" <<__FUNCTION__ << "@" << __FILE__ <<__LINE__;
 #define d(x) qDebug() << #x << x;
 
-  d(cmd->commandType)
-  d(cmd->crc)
+    d(cmd->commandType) d(cmd->crc)
 
 #undef d
 
@@ -305,16 +302,16 @@ int Device::sendCommand(Command *cmd) {
     int i;
 
     static int Counter = 0;
+    if (cmd->commandType != 0)
+      if (STICK20_CMD_SEND_DEBUG_DATA != report[1]) // Log no debug infos
+      {
+        SNPRINTF(text, sizeof(text), "%6d :sendCommand0: \n", Counter);
 
-    if (STICK20_CMD_SEND_DEBUG_DATA != report[1]) // Log no debug infos
-    {
-      SNPRINTF(text, sizeof(text), "%6d :sendCommand0: \n", Counter);
-
-      Counter++;
-      DebugAppendTextGui(text);
-      std::string h = hexdump((const char*)report, 65);
-      DebugAppendTextGui(h.c_str());
-    }
+        Counter++;
+        DebugAppendTextGui(text);
+        std::string h = hexdump((const char *)report, 65);
+        DebugAppendTextGui(h.c_str());
+      }
   }
 
   return err;
