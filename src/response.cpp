@@ -433,6 +433,5 @@ int Response::getResponse(Device *device) {
     DebugResponse();
     qDebug() << "================================================";
     return 0;
-=======
   }
 }
