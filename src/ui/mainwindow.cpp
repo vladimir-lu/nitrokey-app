@@ -4003,7 +4003,8 @@ int MainWindow::getNextCode(uint8_t slotNumber) {
       return 1;
   }
 
-  ret = cryptostick->getCode(slotNumber, lastTOTPTime / lastInterval, lastTOTPTime, lastInterval, result);
+  ret = cryptostick->getCode(slotNumber, lastTOTPTime / lastInterval,
+                             lastTOTPTime, lastInterval, result);
   if(ret!=0){
       //show error message
       csApplet()->warningBox(

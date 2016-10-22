@@ -645,7 +645,8 @@ int Device::writeToTOTPSlot(TOTPSlot *slot) {
 
 *******************************************************************************/
 
-int Device::getCode(uint8_t slotNo, uint64_t challenge, uint64_t lastTOTPTime, uint8_t lastInterval,
+int Device::getCode(uint8_t slotNo, uint64_t challenge,
+                    uint64_t lastTOTPTime, uint8_t lastInterval,
                     uint8_t result[18]) {
   bool is_OTP_PIN_protected = otpPasswordConfig[0] == 1;
 
