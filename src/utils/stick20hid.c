@@ -847,7 +847,7 @@ int HID_GetStick20ReceiveData (unsigned char* data)
        if (OUTPUT_CMD_STICK20_SEND_DATA_TYPE_DEBUG == HID_Stick20ReceiveData_st.SendDataType_u8) { SNPRINTF(text,sizeof
        (text),"<%d>",HID_Stick20ReceiveData_st.SendCounter_u8); DebugAppendTextGui (text); } else { SNPRINTF(text,sizeof
        (text),"-%d-",HID_Stick20ReceiveData_st.SendCounter_u8); DebugAppendTextGui (text); } } */
-    if ((OUTPUT_CMD_STICK20_SEND_DATA_TYPE_NONE != HID_Stick20ReceiveData_st.SendDataType_u8) && (OUTPUT_CMD_STICK20_SEND_DATA_TYPE_DEBUG != HID_Stick20ReceiveData_st.SendDataType_u8))    // Don't
+//    if ((OUTPUT_CMD_STICK20_SEND_DATA_TYPE_NONE != HID_Stick20ReceiveData_st.SendDataType_u8) && (OUTPUT_CMD_STICK20_SEND_DATA_TYPE_DEBUG != HID_Stick20ReceiveData_st.SendDataType_u8))    // Don't
         // log
         // debug
         // data
