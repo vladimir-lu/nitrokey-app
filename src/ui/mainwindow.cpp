@@ -111,6 +111,9 @@ void unmountEncryptedVolumes() {
       qDebug() << "Unmount error: " << strerror(errno);
   }
 #endif // Q_OS_LINUX
+#if defined(Q_OS_MAC)
+  std::system("diskutil eject disk3");
+#endif
 }
 
 void local_sync() {
