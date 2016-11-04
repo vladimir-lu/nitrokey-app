@@ -112,7 +112,10 @@ void unmountEncryptedVolumes() {
   }
 #endif // Q_OS_LINUX
 #if defined(Q_OS_MAC)
-  std::system("diskutil eject disk3");
+  qDebug() << "Unmounting";
+  system("diskutil eject disk3");
+  qDebug() << "/Unmounting";
+  OwnSleep::sleep(2);
 #endif
 }
 
