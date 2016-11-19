@@ -1607,10 +1607,10 @@ int Device::writeGeneralConfig(uint8_t data[]) {
     return ERR_NOT_CONNECTED;
   }
 
-  const auto data_with_password_len = sizeof(data) + sizeof(adminTemporaryPassword);
+  const auto data_with_password_len = 5 + sizeof(adminTemporaryPassword);
   uint8_t data_with_password[data_with_password_len] = {};
-  memcpy(data_with_password, data, sizeof(data));
-  memcpy(data_with_password + sizeof(data), adminTemporaryPassword, sizeof(adminTemporaryPassword));
+  memcpy(data_with_password, data, 5);
+  memcpy(data_with_password + 5, adminTemporaryPassword, sizeof(adminTemporaryPassword));
 
   Command cmd(CMD_WRITE_CONFIG, data_with_password, sizeof(data_with_password));
   authorize(&cmd);
