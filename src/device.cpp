@@ -705,10 +705,10 @@ int Device::getCode(uint8_t slotNo, uint64_t challenge, uint64_t lastTOTPTime, u
   memcpy(data + 17, &lastInterval, 1);
 
   if (isConnected) {
-    const auto data_with_password_len = sizeof(data) + sizeof(adminTemporaryPassword);
+    const auto data_with_password_len = sizeof(data) + sizeof(userTemporaryPassword);
     uint8_t data_with_password[data_with_password_len] = {};
     memcpy(data_with_password, data, sizeof(data));
-    memcpy(data_with_password + sizeof(data), adminTemporaryPassword, sizeof(adminTemporaryPassword));
+    memcpy(data_with_password + sizeof(data), userTemporaryPassword, sizeof(userTemporaryPassword));
 
     Command cmd(CMD_GET_CODE, data_with_password, sizeof(data_with_password));
 
