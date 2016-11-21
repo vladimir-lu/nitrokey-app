@@ -421,7 +421,8 @@ int Response::getResponse(Device *device) {
   memcpy((void *)&HID_Stick20Status_st, reportBuffer + 1 + OUTPUT_CMD_RESULT_STICK20_STATUS_START,
          sizeof(HID_Stick20Status_st));
 
-    if (lastCommandType != 0) {
+    if (lastCommandType != CMD_GET_STATUS &&
+        lastCommandType != CMD_READ_SLOT) {
       qDebug() << "### FUNCTION" << __FUNCTION__ << "@" << __FILE__ << __LINE__;
 #define d(x) qDebug() << #x << x;
 
