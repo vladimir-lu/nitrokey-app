@@ -578,7 +578,8 @@ struct SendOTPData {
 } __packed;
 
 int Device::writeToHOTPSlot(HOTPSlot *slot) {
-  if (!((slot->slotNumber >= 0x10) && (slot->slotNumber < 0x10 + HOTP_SlotCount))) {
+  const auto slotNumber = slot->slotNumber;
+  if (!is_HOTP_slot_number(slotNumber)) {
     return -1; // wrong slot number checked on app side //TODO ret code conflict
   }
   int res;
@@ -591,7 +592,7 @@ int Device::writeToHOTPSlot(HOTPSlot *slot) {
     buffer = data;
     buffer_size = sizeof(data);
     memset(data, 0, sizeof(data));
-    data[0] = slot->slotNumber;
+    data[0] = slotNumber;
     memcpy(data + 1, slot->slotName, 15);
     memcpy(data + 16, slot->secret, 20);
     data[36] = slot->config;
@@ -638,7 +639,7 @@ int Device::writeToHOTPSlot(HOTPSlot *slot) {
     buffer = (uint8_t*) &write_data;
     buffer_size = sizeof(write_data);
     memcpy(write_data.temporary_admin_password, adminTemporaryPassword, sizeof(adminTemporaryPassword));
-    write_data.slot_number = slot->slotNumber;
+    write_data.slot_number = slotNumber;
     memcpy(write_data.slot_counter_s, slot->counter, sizeof(slot->counter));
     write_data._slot_config = slot->config;
     memcpy(write_data.slot_token_id, slot->tokenID, sizeof(slot->tokenID));
@@ -667,6 +668,10 @@ int Device::writeToHOTPSlot(HOTPSlot *slot) {
     return -3; // other issue
 }
 
+bool Device::is_HOTP_slot_number(const uint8_t slotNumber) const {
+  return ((slotNumber >= 0x10) && (slotNumber < 0x10 + HOTP_SlotCount));
+}
+
 bool Device::is_auth08_supported() const { return false; } //TODO detect firmware version and decide
 
 /*******************************************************************************
@@ -680,12 +685,13 @@ bool Device::is_auth08_supported() const { return false; } //TODO detect firmwar
 *******************************************************************************/
 
 int Device::writeToTOTPSlot(TOTPSlot *slot) {
-  if ((slot->slotNumber >= 0x20) && (slot->slotNumber < 0x20 + TOTP_SlotCount)) {
+  const auto slotNumber = slot->slotNumber;
+  if (is_TOTP_slot_number(slotNumber)) {
     int res;
 
     uint8_t data[COMMAND_SIZE] = {0};
 
-    data[0] = slot->slotNumber;
+    data[0] = slotNumber;
     memcpy(data + 1, slot->slotName, 15);
     memcpy(data + 16, slot->secret, 20);
     data[36] = slot->config;
@@ -713,6 +719,10 @@ int Device::writeToTOTPSlot(TOTPSlot *slot) {
     }
   }
   return -1;
+}
+
+bool Device::is_TOTP_slot_number(const uint8_t slotNumber) const {
+  return (slotNumber >= 0x20) && (slotNumber < 0x20 + TOTP_SlotCount);
 }
 
 /*******************************************************************************
