@@ -1917,7 +1917,7 @@ void MainWindow::generateHOTPConfig(HOTPSlot *slot) {
   }
 }
 
-void MainWindow::generateTOTPConfig(TOTPSlot *slot) {
+void MainWindow::generateTOTPConfig(HOTPSlot *slot) {
   uint8_t selectedSlot = ui->slotComboBox->currentIndex();
 
   // get the TOTP slot number
@@ -3011,12 +3011,12 @@ void MainWindow::on_writeButton_clicked() {
         }
         res = cryptostick->writeToHOTPSlot(&hotp);
       } else { // TOTP slot
-        TOTPSlot totp;
+        HOTPSlot totp;
         generateTOTPConfig(&totp);
         if(!validate_secret(totp.secret)) {
           return;
         }
-        res = cryptostick->writeToTOTPSlot(&totp);
+        res = cryptostick->writeToHOTPSlot(&totp);
       }
 
       if (DebugingActive == TRUE) {
