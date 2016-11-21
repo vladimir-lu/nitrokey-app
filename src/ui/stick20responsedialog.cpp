@@ -219,6 +219,8 @@ void Stick20ResponseDialog::checkStick20StatusDebug(Response *stick20Response, i
     OutputText.append(QString("Can't read HID interface\n"));
   }
 
+  qDebug() << OutputText;
+
   ui->OutputText->setText(OutputText);
   ui->OutputText->show();
 }

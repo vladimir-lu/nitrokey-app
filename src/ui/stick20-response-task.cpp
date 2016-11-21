@@ -107,7 +107,7 @@ void Stick20ResponseTask::checkStick20Status() {
       ActiveCommand = stick20Response->HID_Stick20Status_st.LastCommand_u8;
     }
 
-    switch (stick20Response->HID_Stick20Status_st.Status_u8) {
+    switch (stick20Response->HID_Stick20Status_st.Status_u8) { //set ENDFLAG
     case OUTPUT_CMD_STICK20_STATUS_IDLE:
       break;
     case OUTPUT_CMD_STICK20_STATUS_OK:
@@ -137,7 +137,7 @@ void Stick20ResponseTask::checkStick20Status() {
       break;
     }
     if (TRUE == FlagNoStopWhenStatusOK) {
-      switch (stick20Response->HID_Stick20Status_st.Status_u8) {
+      switch (stick20Response->HID_Stick20Status_st.Status_u8) { //set retry count
       case OUTPUT_CMD_STICK20_STATUS_OK:
         done(TRUE);
         ResultValue = TRUE;
@@ -188,7 +188,7 @@ void Stick20ResponseTask::checkStick20Status() {
     if (OUTPUT_CMD_STICK20_STATUS_OK == stick20Response->HID_Stick20Status_st.Status_u8) {
       ResultValue = TRUE;
 
-      switch (ActiveCommand) {
+      switch (ActiveCommand) { //set retry count
       case STICK20_CMD_ENABLE_CRYPTED_PARI:
         ShowIconMessage(tr("Encrypted volume unlocked successfully"));
         HID_Stick20Configuration_st.UserPwRetryCount = 3;
@@ -243,7 +243,7 @@ void Stick20ResponseTask::checkStick20Status() {
     }
 
     if (OUTPUT_CMD_STICK20_STATUS_WRONG_PASSWORD ==
-        stick20Response->HID_Stick20Status_st.Status_u8) {
+        stick20Response->HID_Stick20Status_st.Status_u8) { //show message
       switch (ActiveCommand) {
       case STICK20_CMD_ENABLE_HIDDEN_CRYPTED_PARI: {
           csApplet()->warningBox(tr("Can't enable hidden volume"));
@@ -254,7 +254,7 @@ void Stick20ResponseTask::checkStick20Status() {
     }
 
     if (OUTPUT_CMD_STICK20_STATUS_NO_USER_PASSWORD_UNLOCK ==
-        stick20Response->HID_Stick20Status_st.Status_u8) {
+        stick20Response->HID_Stick20Status_st.Status_u8) { //msg
       switch (ActiveCommand) {
       case STICK20_CMD_SEND_HIDDEN_VOLUME_SETUP: {
         // msgBox.setText("To setup the hidden volume, please
@@ -272,7 +272,7 @@ void Stick20ResponseTask::checkStick20Status() {
     }
 
     if (OUTPUT_CMD_STICK20_STATUS_SMARTCARD_ERROR ==
-        stick20Response->HID_Stick20Status_st.Status_u8) {
+        stick20Response->HID_Stick20Status_st.Status_u8) { //msg
       switch (ActiveCommand) {
       case STICK20_CMD_ENABLE_HIDDEN_CRYPTED_PARI: {
           csApplet()->warningBox(tr("Smartcard error, please retry the command"));
@@ -283,7 +283,7 @@ void Stick20ResponseTask::checkStick20Status() {
     }
 
     if (OUTPUT_CMD_STICK20_STATUS_SECURITY_BIT_ACTIVE ==
-        stick20Response->HID_Stick20Status_st.Status_u8) {
+        stick20Response->HID_Stick20Status_st.Status_u8) { //msg
       switch (ActiveCommand) {
       case STICK20_CMD_ENABLE_FIRMWARE_UPDATE: {
         csApplet()->messageBox(tr("Security bit of the device is activated.\nFirmware update is "

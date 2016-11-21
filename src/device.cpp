@@ -232,6 +232,27 @@ void Device::connect() {
   }
 }
 
+#include <sstream>
+#include <string>
+
+std::string hexdump(const char *p, size_t size) {
+  std::stringstream out;
+  char formatbuf[128];
+  const char *pstart = p;
+
+  for (const char *pend = p + size; p < pend;) {
+    snprintf(formatbuf, 128, "%04x\t", p - pstart);
+    out << formatbuf;
+
+    for (const char *le = p + 16; p < le && p < pend; p++) {
+      snprintf(formatbuf, 128, "%02x ", uint8_t(*p));
+      out << formatbuf;
+    }
+    out << std::endl;
+  }
+  return out.str();
+}
+
 /*******************************************************************************
   sendCommand
   Send a command to the stick via the send feature report HID message
@@ -254,6 +275,13 @@ int Device::sendCommand(Command *cmd) {
     cmd->generateCRC();
   ((uint32_t *)(report + 1))[15] = cmd->crc;
 
+  qDebug() << "### FUNCTION" <<__FUNCTION__ << "@" << __FILE__ <<__LINE__;
+#define d(x) qDebug() << #x << x;
+
+    d(cmd->commandType) d(cmd->crc)
+
+#undef d
+
   if (0 == dev_hid_handle) {
     return (-1); // Return error
   }
@@ -274,21 +302,16 @@ int Device::sendCommand(Command *cmd) {
     int i;
 
     static int Counter = 0;
+    if (cmd->commandType != 0)
+      if (STICK20_CMD_SEND_DEBUG_DATA != report[1]) // Log no debug infos
+      {
+        SNPRINTF(text, sizeof(text), "%6d :sendCommand0: \n", Counter);
 
-    if (STICK20_CMD_SEND_DEBUG_DATA != report[1]) // Log no debug infos
-    {
-      SNPRINTF(text, sizeof(text), "%6d :sendCommand0: ", Counter);
-
-      Counter++;
-      DebugAppendTextGui(text);
-      for (i = 0; i <= 64; i++) {
-        SNPRINTF(text, sizeof(text), "%02x ", (unsigned char)report[i]);
+        Counter++;
         DebugAppendTextGui(text);
+        std::string h = hexdump((const char *)report, 65);
+        DebugAppendTextGui(h.c_str());
       }
-      SNPRINTF(text, sizeof(text), "\n");
-
-      DebugAppendTextGui(text);
-    }
   }
 
   return err;
@@ -690,7 +713,8 @@ int Device::writeToTOTPSlot(TOTPSlot *slot) {
 
 *******************************************************************************/
 
-int Device::getCode(uint8_t slotNo, uint64_t challenge, uint64_t lastTOTPTime, uint8_t lastInterval,
+int Device::getCode(uint8_t slotNo, uint64_t challenge,
+                    uint64_t lastTOTPTime, uint8_t lastInterval,
                     uint8_t result[18]) {
   bool is_OTP_PIN_protected = otpPasswordConfig[0] == 1;
 

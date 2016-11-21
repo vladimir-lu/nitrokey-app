@@ -64,19 +64,9 @@ Response::Response() {
   HID_Stick20Status_st.ProgressBarValue_u8 = 0;
 }
 
-/*******************************************************************************
+#include <string>
+extern std::string hexdump(const char *p, size_t size);
 
-  DebugResponse
-
-  Changes
-  Date      Author          Info
-  10.03.14  RB              Function created
-
-  Reviews
-  Date      Reviewer        Info
-
-
-*******************************************************************************/
 void Response::DebugResponse() {
   char text[1000];
 
@@ -91,14 +81,13 @@ void Response::DebugResponse() {
     return;
   }
 
-  SNPRINTF(text, sizeof(text), "%6d :getResponse : ", Counter);
+  SNPRINTF(text, sizeof(text), "%6d :getResponse : \n", Counter);
 
   Counter++;
   DebugAppendTextGui(text);
-  for (i = 0; i <= 64; i++) {
-    SNPRINTF(text, sizeof(text), "%02x ", (unsigned char)reportBuffer[i]);
-    DebugAppendTextGui(text);
-  }
+
+  std::string h = hexdump((const char *)reportBuffer, 65);
+  DebugAppendTextGui(h.c_str());
 
   SNPRINTF(text, sizeof(text), "\n");
   DebugAppendTextGui(text);
@@ -137,7 +126,9 @@ void Response::DebugResponse() {
     break;
 
   default:
-    DebugAppendTextGui((char *)"         Device status       : Unknown\n");
+    const char *unknown_text = (char *)"         Device status       : Unknown (%u)\n";
+    SNPRINTF(text, sizeof(text), unknown_text, deviceStatus);
+    DebugAppendTextGui(text);
     break;
   }
 
@@ -382,7 +373,9 @@ void Response::DebugResponse() {
     DebugAppendTextGui((char *)"         Last command status : CMD_STATUS_UNKNOWN_COMMAND\n");
     break;
   default:
-    DebugAppendTextGui((char *)"         Last command status : Unknown\n");
+    const char *unknown_text_cmd = "         Last command status : Unknown (%u)\n";
+    SNPRINTF(text, sizeof(text), unknown_text_cmd, lastCommandStatus);
+    DebugAppendTextGui(text);
     break;
   }
 
@@ -425,7 +418,20 @@ int Response::getResponse(Device *device) {
   memcpy((void *)&HID_Stick20Status_st, reportBuffer + 1 + OUTPUT_CMD_RESULT_STICK20_STATUS_START,
          sizeof(HID_Stick20Status_st));
 
-  DebugResponse();
+    if (lastCommandType != 0) {
+      qDebug() << "### FUNCTION" << __FUNCTION__ << "@" << __FILE__ << __LINE__;
+#define d(x) qDebug() << #x << x;
 
-  return 0;
+      d(deviceStatus) d(lastCommandType) d(lastCommandCRC) d(lastCommandStatus) d(responseCRC)
+#undef d
+    qDebug() << "HID_Stick20Status_st.CommandCounter_u8 << .LastCommand_u8 << .ProgressBarValue_u8 << .Status_u8;";
+    qDebug() << HID_Stick20Status_st.CommandCounter_u8 <<
+                HID_Stick20Status_st.LastCommand_u8 <<
+                HID_Stick20Status_st.ProgressBarValue_u8 <<
+                HID_Stick20Status_st.Status_u8;
+
+    DebugResponse();
+    qDebug() << "================================================";
+    return 0;
+  }
 }
