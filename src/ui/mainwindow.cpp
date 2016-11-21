@@ -3114,6 +3114,7 @@ void MainWindow::on_hexRadioButton_toggled(bool checked) {
   if (!checked) {
     return;
   }
+  ui->secretEdit->setMaxLength(SECRET_LENGTH_HEX);
 
   QByteArray secret;
   uint8_t encoded[SECRET_LENGTH_BASE32] = {};
@@ -3132,7 +3133,6 @@ void MainWindow::on_hexRadioButton_toggled(bool checked) {
 
     secret = QByteArray((char *) decoded, decoded_size).toHex();
 
-    ui->secretEdit->setMaxLength(SECRET_LENGTH_HEX);
     ui->secretEdit->setText(QString(secret));
     secretInClipboard = ui->secretEdit->text();
     copyToClipboard(secretInClipboard);
@@ -3143,6 +3143,7 @@ void MainWindow::on_base32RadioButton_toggled(bool checked) {
   if (!checked) {
     return;
   }
+  ui->secretEdit->setMaxLength(SECRET_LENGTH_BASE32);
 
   QByteArray secret;
   uint8_t encoded[SECRET_LENGTH_BASE32] = {};
@@ -3154,7 +3155,6 @@ void MainWindow::on_base32RadioButton_toggled(bool checked) {
     memcpy(decoded, secret.data(), decoded_size);
     base32_encode(decoded, decoded_size, encoded, sizeof(encoded));
 
-    ui->secretEdit->setMaxLength(SECRET_LENGTH_BASE32);
     ui->secretEdit->setText(QString((char *) encoded));
     secretInClipboard = ui->secretEdit->text();
     copyToClipboard(secretInClipboard);
