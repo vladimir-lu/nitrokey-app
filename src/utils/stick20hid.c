@@ -856,24 +856,24 @@ int HID_GetStick20ReceiveData (unsigned char* data)
 
     int i;
 
-        SNPRINTF (text, sizeof (text), "HID_GetStick20ReceiveData: ");
+//        SNPRINTF (text, sizeof (text), "HID_GetStick20ReceiveData: ");
 
-        DebugAppendTextGui (text);
-        for (i = 0; i < 64; i++)
-        {
-            SNPRINTF (text, sizeof (text), "%02x ", data[i]);
-            DebugAppendTextGui (text);
-        }
-        SNPRINTF (text, sizeof (text), "\n");
-        DebugAppendTextGui (text);
+//        DebugAppendTextGui (text);
+//        for (i = 0; i < 64; i++)
+//        {
+//            SNPRINTF (text, sizeof (text), "%02x ", data[i]);
+//            DebugAppendTextGui (text);
+//        }
+//        SNPRINTF (text, sizeof (text), "\n");
+//        DebugAppendTextGui (text);
 
 
-        SNPRINTF (text, sizeof (text),
-                  "HID_GetStick20ReceiveData: SendCounter %d Typ %d - %d - Size %d\n",
-                  HID_Stick20ReceiveData_st.SendCounter_u8,
-                  HID_Stick20ReceiveData_st.SendDataType_u8, HID_Stick20ReceiveData_st.FollowBytesFlag_u8, HID_Stick20ReceiveData_st.SendSize_u8);
+//        SNPRINTF (text, sizeof (text),
+//                  "HID_GetStick20ReceiveData: SendCounter %d Typ %d - %d - Size %d\n",
+//                  HID_Stick20ReceiveData_st.SendCounter_u8,
+//                  HID_Stick20ReceiveData_st.SendDataType_u8, HID_Stick20ReceiveData_st.FollowBytesFlag_u8, HID_Stick20ReceiveData_st.SendSize_u8);
 
-        DebugAppendTextGui (text);
+//        DebugAppendTextGui (text);
 
     }
 
